@@ -71,6 +71,26 @@ Now you can perform operations on your cluster:
 {:ok, %{"count" => count}} = MyApp.Cluster.get("/my-index/_count")
 ```
 
+## Livebook
+
+To use in [livebook](https://livebook.dev) you can try this;
+
+```elixir
+Mix.install([
+  {:snap, "~> 0.9.0"},
+  {:kino, "~> 0.12.3"},
+  {:finch, "~> 0.18.0"}
+])
+
+defmodule Elastic do
+  use Snap.Cluster, otp_app: :snap
+end
+
+Kino.start_child!({Elastic, [url: "http://elastic.local:9200"]})
+
+Snap.Search.search(Elastic, "products", %{query: %{match_all: %{}}})
+```
+
 ## Testing
 
 See `Snap.Test` for details about to set up process isolated indexes to allow
